@@ -468,10 +468,13 @@
 
       renderResult(result);
 
-      // Якщо це кавове обладнання — запускаємо пошук на coffeeone.com.ua
+      // Якщо це кавове обладнання — запускаємо пошук на coffeeone.com.ua по бренду
       if (result && result.is_coffee_equipment) {
-        const query = result.search_query || [result.brand, result.model].filter(v => v && v !== 'Не визначено').join(' ');
-        if (query) searchCoffeeOne(query, result.brand, result.model);
+        // Шукаємо спочатку по бренду — так більше результатів
+        const searchQuery = result.search_brand ||
+          (result.brand !== 'Не визначено' ? result.brand : null) ||
+          result.model;
+        if (searchQuery) searchCoffeeOne(searchQuery, result.brand, result.model);
       }
 
     } catch (err) {
@@ -515,11 +518,10 @@
     const products = data.products || [];
 
     if (products.length === 0) {
-      // Товар не знайдено — показуємо кнопку пошуку
-      const displayName = [brand, model].filter(v => v && v !== 'Не визначено').join(' ') || query;
+      const displayName = brand !== 'Не визначено' ? brand : query;
       body.innerHTML = `
         <p style="font-size:13px;color:var(--text2);margin-bottom:14px;line-height:1.6">
-          Точний збіг не знайдено, але на coffeeone.com.ua може бути схоже обладнання або аналоги.
+          Точний збіг не знайдено — можливо такої моделі немає в наявності. Перегляньте всі товари бренду.
         </p>
         <a href="${searchUrl}" target="_blank" rel="noopener" class="shop-search-btn">
           🔎 Шукати «${displayName}» на coffeeone.com.ua
@@ -527,7 +529,11 @@
       return;
     }
 
-    // Знайдені товари
+    const modelName = model !== 'Не визначено' ? model : '';
+    const intro = modelName
+      ? `<p style="font-size:13px;color:var(--text2);margin-bottom:14px;line-height:1.6">Знайдено <strong>${products.length}</strong> товарів бренду <strong>${brand}</strong> на coffeeone.com.ua. Можливо серед них є саме ця або схожа модель:</p>`
+      : `<p style="font-size:13px;color:var(--text2);margin-bottom:14px;line-height:1.6">Знайдено <strong>${products.length}</strong> товарів на coffeeone.com.ua:</p>`;
+
     const productsHTML = products.map(p => `
       <a href="${p.url}" target="_blank" rel="noopener" class="product-item">
         <img
@@ -544,8 +550,9 @@
       </a>`).join('');
 
     body.innerHTML = `
+      ${intro}
       <div class="product-list">${productsHTML}</div>
-      <a href="${searchUrl}" target="_blank" rel="noopener" class="shop-search-btn">
+      <a href="${searchUrl}" target="_blank" rel="noopener" class="shop-search-btn" style="margin-top:4px">
         🔎 Всі результати на coffeeone.com.ua
       </a>`;
   }
