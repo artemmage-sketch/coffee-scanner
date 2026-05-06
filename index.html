@@ -46,245 +46,197 @@
       position: fixed; inset: 0;
       background-image: radial-gradient(circle, rgba(32,48,60,0.06) 1px, transparent 1px);
       background-size: 28px 28px;
-      pointer-events: none;
-      z-index: 0;
+      pointer-events: none; z-index: 0;
     }
 
-    .wrapper {
-      position: relative; z-index: 1;
-      max-width: 680px;
-      margin: 0 auto;
-      padding: 0 20px 80px;
-    }
+    .wrapper { position: relative; z-index: 1; max-width: 680px; margin: 0 auto; padding: 0 20px 80px; }
 
     /* Header */
     header { padding: 52px 0 40px; text-align: center; }
 
     .logo-wrap {
       display: inline-flex; align-items: center; justify-content: center;
-      width: 64px; height: 64px;
-      background: var(--btn);
-      border-radius: 18px;
-      font-size: 28px;
-      margin-bottom: 22px;
+      width: 64px; height: 64px; background: var(--btn);
+      border-radius: 18px; font-size: 28px; margin-bottom: 22px;
       box-shadow: var(--shadow-lg);
     }
 
     h1 {
       font-family: 'Playfair Display', serif;
-      font-size: clamp(28px, 6vw, 44px);
-      font-weight: 600;
-      color: var(--text);
-      letter-spacing: -0.02em;
-      line-height: 1.15;
-      margin-bottom: 12px;
+      font-size: clamp(28px, 6vw, 44px); font-weight: 600;
+      color: var(--text); letter-spacing: -0.02em; line-height: 1.15; margin-bottom: 12px;
     }
 
     h1 em { font-style: italic; color: var(--btn-hov); }
 
-    .subtitle {
-      font-size: 15px; color: var(--text2); font-weight: 300;
-      max-width: 400px; margin: 0 auto; line-height: 1.65;
-    }
+    .subtitle { font-size: 15px; color: var(--text2); font-weight: 300; max-width: 400px; margin: 0 auto; line-height: 1.65; }
 
     /* Upload */
     .upload-zone {
-      border: 2px dashed var(--border2);
-      border-radius: var(--radius-lg);
-      padding: 44px 24px;
-      text-align: center; cursor: pointer;
-      transition: all 0.22s;
-      background: var(--surface);
-      margin-bottom: 16px;
-      box-shadow: var(--shadow);
+      border: 2px dashed var(--border2); border-radius: var(--radius-lg);
+      padding: 44px 24px; text-align: center; cursor: pointer;
+      transition: all 0.22s; background: var(--surface); margin-bottom: 16px; box-shadow: var(--shadow);
     }
-
-    .upload-zone:hover, .upload-zone.drag-over {
-      border-color: var(--btn);
-      background: var(--bg3);
-    }
+    .upload-zone:hover, .upload-zone.drag-over { border-color: var(--btn); background: var(--bg3); }
 
     .upload-icon-wrap {
-      width: 52px; height: 52px;
-      background: var(--btn);
-      border-radius: 14px;
+      width: 52px; height: 52px; background: var(--btn); border-radius: 14px;
       display: inline-flex; align-items: center; justify-content: center;
-      font-size: 24px; margin-bottom: 16px;
-      box-shadow: 0 4px 12px rgba(32,48,60,0.2);
+      font-size: 24px; margin-bottom: 16px; box-shadow: 0 4px 12px rgba(32,48,60,0.2);
     }
 
     .upload-title { font-size: 16px; font-weight: 600; color: var(--text); margin-bottom: 6px; }
     .upload-sub   { font-size: 13px; color: var(--text2); }
 
     /* Divider */
-    .divider {
-      display: flex; align-items: center; gap: 14px;
-      color: var(--text3); font-size: 12px; margin: 16px 0;
-    }
+    .divider { display: flex; align-items: center; gap: 14px; color: var(--text3); font-size: 12px; margin: 16px 0; }
     .divider::before, .divider::after { content: ''; flex: 1; height: 1px; background: var(--border2); }
 
     /* Buttons */
     .btn {
-      width: 100%; padding: 13px 20px;
-      border-radius: var(--radius); border: none;
+      width: 100%; padding: 13px 20px; border-radius: var(--radius); border: none;
       background: var(--btn); color: var(--btn-text);
-      font-size: 14px; font-weight: 600;
-      font-family: 'DM Sans', sans-serif;
-      cursor: pointer; transition: all 0.18s;
-      box-shadow: 0 2px 8px rgba(32,48,60,0.2);
+      font-size: 14px; font-weight: 600; font-family: 'DM Sans', sans-serif;
+      cursor: pointer; transition: all 0.18s; box-shadow: 0 2px 8px rgba(32,48,60,0.2);
     }
     .btn:hover { background: var(--btn-hov); transform: translateY(-1px); box-shadow: 0 4px 14px rgba(32,48,60,0.25); }
     .btn:active { transform: translateY(0); }
     .btn:disabled { opacity: 0.45; cursor: not-allowed; transform: none; box-shadow: none; }
 
     .btn-outline {
-      background: transparent;
-      border: 1.5px solid var(--border2);
-      color: var(--text2); box-shadow: none;
-      font-weight: 500; font-size: 13px; padding: 10px 20px;
+      background: transparent; border: 1.5px solid var(--border2);
+      color: var(--text2); box-shadow: none; font-weight: 500; font-size: 13px; padding: 10px 20px;
     }
     .btn-outline:hover { background: var(--bg3); border-color: var(--btn); color: var(--btn); transform: none; box-shadow: none; }
 
     /* Camera */
     #camera-area { display: none; margin-bottom: 16px; }
-
-    video {
-      width: 100%; border-radius: var(--radius-lg);
-      border: 2px solid var(--border);
-      background: var(--btn); display: block;
-      max-height: 380px; object-fit: cover;
-    }
-
+    video { width: 100%; border-radius: var(--radius-lg); border: 2px solid var(--border); background: var(--btn); display: block; max-height: 380px; object-fit: cover; }
     canvas { display: none; }
 
     /* Preview */
     #preview-area { display: none; }
-
-    .preview-wrap {
-      position: relative; border-radius: var(--radius-lg);
-      overflow: hidden; border: 2px solid var(--border);
-      margin-bottom: 14px; box-shadow: var(--shadow);
-    }
-
+    .preview-wrap { position: relative; border-radius: var(--radius-lg); overflow: hidden; border: 2px solid var(--border); margin-bottom: 14px; box-shadow: var(--shadow); }
     #preview-img { width: 100%; display: block; max-height: 400px; object-fit: cover; }
-
-    .preview-badge {
-      position: absolute; top: 12px; right: 12px;
-      background: var(--btn); color: #fff;
-      border-radius: 20px; padding: 5px 13px;
-      font-size: 12px; font-weight: 500;
-    }
+    .preview-badge { position: absolute; top: 12px; right: 12px; background: var(--btn); color: #fff; border-radius: 20px; padding: 5px 13px; font-size: 12px; font-weight: 500; }
 
     /* Loading */
     #loading-area { display: none; padding: 24px 0; text-align: center; }
-
     .loading-text { font-size: 14px; color: var(--text2); margin-bottom: 14px; }
-
     .loading-track { height: 3px; background: var(--bg2); border-radius: 3px; overflow: hidden; }
-
-    .loading-fill {
-      height: 100%;
-      background: linear-gradient(90deg, transparent, var(--btn), transparent);
-      width: 40%;
-      animation: sweep 1.2s ease-in-out infinite;
-    }
-
-    @keyframes sweep {
-      0%   { transform: translateX(-200%); }
-      100% { transform: translateX(450%); }
-    }
+    .loading-fill { height: 100%; background: linear-gradient(90deg, transparent, var(--btn), transparent); width: 40%; animation: sweep 1.2s ease-in-out infinite; }
+    @keyframes sweep { 0% { transform: translateX(-200%); } 100% { transform: translateX(450%); } }
 
     /* Result */
     #result-area { display: none; animation: fade-up 0.4s ease; }
+    @keyframes fade-up { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
 
-    @keyframes fade-up {
-      from { opacity: 0; transform: translateY(14px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
+    .result-card { background: var(--surface); border-radius: var(--radius-lg); box-shadow: var(--shadow-lg); border: 1px solid var(--border); overflow: hidden; margin-bottom: 16px; }
 
-    .result-card { background: var(--surface); border-radius: var(--radius-lg); box-shadow: var(--shadow-lg); border: 1px solid var(--border); overflow: hidden; }
-
-    .result-header {
-      background: var(--btn); padding: 16px 22px;
-      display: flex; align-items: center; gap: 10px;
-    }
-
-    .result-header-label {
-      font-size: 11px; font-weight: 600;
-      color: rgba(255,255,255,0.7);
-      text-transform: uppercase; letter-spacing: 0.1em;
-    }
-
+    .result-header { background: var(--btn); padding: 16px 22px; display: flex; align-items: center; gap: 10px; }
+    .result-header-label { font-size: 11px; font-weight: 600; color: rgba(255,255,255,0.7); text-transform: uppercase; letter-spacing: 0.1em; }
     .status-dot { width: 8px; height: 8px; border-radius: 50%; background: #6ee895; flex-shrink: 0; }
     .status-dot.error { background: #f07070; }
 
     .result-body { padding: 22px 22px 26px; }
 
-    .result-name {
-      font-family: 'Playfair Display', serif;
-      font-size: 28px; font-weight: 600;
-      color: var(--text); line-height: 1.2; margin-bottom: 4px;
-    }
-
+    .result-name { font-family: 'Playfair Display', serif; font-size: 26px; font-weight: 600; color: var(--text); line-height: 1.2; margin-bottom: 4px; }
     .result-type { font-size: 14px; color: var(--text2); margin-bottom: 20px; }
 
     .result-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 18px; }
-
-    .result-cell {
-      background: var(--bg); border-radius: var(--radius);
-      padding: 12px 15px; border: 1px solid var(--border);
-    }
-
-    .cell-label {
-      font-size: 10px; font-weight: 600; color: var(--text3);
-      text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 5px;
-    }
-
+    .result-cell { background: var(--bg); border-radius: var(--radius); padding: 12px 15px; border: 1px solid var(--border); }
+    .cell-label { font-size: 10px; font-weight: 600; color: var(--text3); text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 5px; }
     .cell-value { font-size: 14px; font-weight: 600; color: var(--text); }
 
     .conf-high { color: var(--success); }
     .conf-mid  { color: var(--warning); }
     .conf-low  { color: var(--danger); }
 
-    .result-desc {
-      font-size: 14px; color: var(--text2); line-height: 1.75;
-      padding: 14px 16px; background: var(--bg);
-      border-radius: var(--radius); border-left: 3px solid var(--btn);
-      margin-bottom: 18px;
-    }
+    .result-desc { font-size: 14px; color: var(--text2); line-height: 1.75; padding: 14px 16px; background: var(--bg); border-radius: var(--radius); border-left: 3px solid var(--btn); margin-bottom: 18px; }
 
-    .features-title {
-      font-size: 11px; font-weight: 600; color: var(--text3);
-      text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 10px;
-    }
-
+    .features-title { font-size: 11px; font-weight: 600; color: var(--text3); text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 10px; }
     .features-list { list-style: none; }
-
-    .features-list li {
-      display: flex; align-items: flex-start; gap: 10px;
-      font-size: 13px; color: var(--text2);
-      padding: 7px 0; border-bottom: 1px solid var(--border); line-height: 1.5;
-    }
-
+    .features-list li { display: flex; align-items: flex-start; gap: 10px; font-size: 13px; color: var(--text2); padding: 7px 0; border-bottom: 1px solid var(--border); line-height: 1.5; }
     .features-list li:last-child { border-bottom: none; }
-
     .feat-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--btn); margin-top: 5px; flex-shrink: 0; }
 
     .tags-wrap { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 16px; }
+    .tag { background: var(--bg3); border: 1px solid var(--border); border-radius: 20px; padding: 4px 12px; font-size: 12px; color: var(--text2); font-weight: 500; }
 
-    .tag {
-      background: var(--bg3); border: 1px solid var(--border);
-      border-radius: 20px; padding: 4px 12px;
-      font-size: 12px; color: var(--text2); font-weight: 500;
+    /* ── Shop block ─────────────────────────────── */
+    .shop-card {
+      background: var(--surface);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-lg);
+      border: 1px solid var(--border);
+      overflow: hidden;
+      margin-bottom: 16px;
     }
 
-    .price-badge {
-      display: inline-flex; align-items: center; gap: 7px;
-      margin-top: 16px; padding: 8px 16px;
+    .shop-header {
+      background: var(--btn);
+      padding: 14px 22px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+
+    .shop-header-left { display: flex; align-items: center; gap: 10px; }
+    .shop-header-label { font-size: 11px; font-weight: 600; color: rgba(255,255,255,0.7); text-transform: uppercase; letter-spacing: 0.1em; }
+    .shop-header-site { font-size: 12px; color: rgba(255,255,255,0.5); }
+
+    .shop-body { padding: 16px 20px 20px; }
+
+    /* Знайдені товари */
+    .product-list { display: flex; flex-direction: column; gap: 12px; margin-bottom: 16px; }
+
+    .product-item {
+      display: flex; gap: 14px; align-items: center;
+      padding: 12px; border-radius: var(--radius);
+      border: 1px solid var(--border);
+      background: var(--bg);
+      text-decoration: none;
+      transition: all 0.18s;
+    }
+
+    .product-item:hover { border-color: var(--btn); background: var(--bg3); transform: translateX(3px); }
+
+    .product-img {
+      width: 70px; height: 70px;
+      border-radius: 8px; object-fit: contain;
+      background: #fff; border: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+
+    .product-info { flex: 1; min-width: 0; }
+
+    .product-name {
+      font-size: 13px; font-weight: 600; color: var(--text);
+      line-height: 1.4; margin-bottom: 6px;
+      display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+    }
+
+    .product-price {
+      font-size: 15px; font-weight: 600; color: var(--btn);
+    }
+
+    .product-arrow { color: var(--text3); font-size: 18px; flex-shrink: 0; }
+
+    /* Кнопка пошуку якщо не знайдено */
+    .shop-search-btn {
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+      width: 100%; padding: 13px 20px;
+      border-radius: var(--radius); border: none;
       background: var(--btn); color: #fff;
-      border-radius: 20px; font-size: 13px; font-weight: 600;
+      font-size: 14px; font-weight: 600;
+      font-family: 'DM Sans', sans-serif;
+      cursor: pointer; text-decoration: none;
+      transition: all 0.18s;
+      box-shadow: 0 2px 8px rgba(32,48,60,0.2);
     }
+    .shop-search-btn:hover { background: var(--btn-hov); transform: translateY(-1px); }
 
+    .shop-loading { text-align: center; padding: 20px; color: var(--text2); font-size: 13px; }
+
+    /* Not coffee */
     .not-coffee { text-align: center; padding: 36px 20px; }
     .not-coffee-icon  { font-size: 42px; margin-bottom: 12px; }
     .not-coffee-title { font-size: 17px; font-weight: 600; color: var(--text); margin-bottom: 8px; }
@@ -299,17 +251,16 @@
     .toast {
       position: fixed; bottom: 24px; left: 50%;
       transform: translateX(-50%) translateY(100px);
-      background: var(--btn); color: #fff;
-      border-radius: 20px; padding: 11px 22px;
-      font-size: 13px; font-weight: 500;
-      box-shadow: var(--shadow-lg);
-      transition: transform 0.3s ease; z-index: 999; white-space: nowrap;
+      background: var(--btn); color: #fff; border-radius: 20px;
+      padding: 11px 22px; font-size: 13px; font-weight: 500;
+      box-shadow: var(--shadow-lg); transition: transform 0.3s ease; z-index: 999; white-space: nowrap;
     }
     .toast.show { transform: translateX(-50%) translateY(0); }
 
     @media (max-width: 480px) {
       header { padding: 32px 0 28px; }
       .result-grid { grid-template-columns: 1fr; }
+      .product-img { width: 56px; height: 56px; }
     }
   </style>
 </head>
@@ -319,7 +270,7 @@
   <header>
     <div class="logo-wrap">☕</div>
     <h1>Coffee <em>Scanner</em></h1>
-    <p class="subtitle">Завантажте фото кавового обладнання — ШІ миттєво визначить модель, бренд та характеристики</p>
+    <p class="subtitle">Завантажте фото кавового обладнання — ШІ миттєво визначить модель, бренд та знайде де купити</p>
   </header>
 
   <div class="upload-zone" id="upload-zone"
@@ -362,6 +313,7 @@
     <div class="loading-track"><div class="loading-fill"></div></div>
   </div>
 
+  <!-- Результат розпізнавання -->
   <div id="result-area">
     <div class="result-card">
       <div class="result-header">
@@ -370,14 +322,31 @@
       </div>
       <div class="result-body" id="result-body"></div>
     </div>
-    <button class="btn btn-outline" onclick="resetAll()" style="margin-top:12px">↩ Сканувати ще раз</button>
+
+    <!-- Блок пошуку на coffeeone.com.ua -->
+    <div class="shop-card" id="shop-card" style="display:none">
+      <div class="shop-header">
+        <div class="shop-header-left">
+          <div style="font-size:18px">🛒</div>
+          <div>
+            <div class="shop-header-label">Купити обладнання</div>
+            <div class="shop-header-site">coffeeone.com.ua</div>
+          </div>
+        </div>
+      </div>
+      <div class="shop-body" id="shop-body">
+        <div class="shop-loading">⏳ Шукаємо на coffeeone.com.ua...</div>
+      </div>
+    </div>
+
+    <button class="btn btn-outline" onclick="resetAll()" style="margin-top:4px">↩ Сканувати ще раз</button>
   </div>
 
 </div>
 
 <footer>
   Працює на базі <a href="https://openai.com" target="_blank" rel="noopener">OpenAI GPT-4o Vision</a><br>
-  <a href="https://github.com/your-username/coffee-scanner" target="_blank" rel="noopener">GitHub</a> · MIT License · Зроблено з ☕
+  <a href="https://github.com/artemmage-sketch/coffee-scanner" target="_blank" rel="noopener">GitHub</a> · MIT License · Зроблено з ☕
 </footer>
 
 <div class="toast" id="toast"></div>
@@ -393,13 +362,9 @@
     'Готую результат...'
   ];
 
-  function handleDragOver(e) {
-    e.preventDefault();
-    document.getElementById('upload-zone').classList.add('drag-over');
-  }
-  function handleDragLeave() {
-    document.getElementById('upload-zone').classList.remove('drag-over');
-  }
+  function handleDragOver(e) { e.preventDefault(); document.getElementById('upload-zone').classList.add('drag-over'); }
+  function handleDragLeave() { document.getElementById('upload-zone').classList.remove('drag-over'); }
+
   function handleDrop(e) {
     e.preventDefault();
     document.getElementById('upload-zone').classList.remove('drag-over');
@@ -432,23 +397,18 @@
 
   async function startCamera() {
     try {
-      mediaStream = await navigator.mediaDevices.getUserMedia({
-        video: { facingMode: 'environment', width: { ideal: 1280 }, height: { ideal: 720 } }
-      });
+      mediaStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } });
       document.getElementById('video').srcObject = mediaStream;
       document.getElementById('camera-area').style.display = 'block';
       document.getElementById('preview-area').style.display = 'none';
       document.getElementById('result-area').style.display = 'none';
-    } catch {
-      showToast('📷 Камера недоступна — завантажте фото вручну');
-    }
+    } catch { showToast('📷 Камера недоступна — завантажте фото вручну'); }
   }
 
   function capturePhoto() {
     const video = document.getElementById('video');
     const canvas = document.getElementById('canvas');
-    canvas.width = video.videoWidth;
-    canvas.height = video.videoHeight;
+    canvas.width = video.videoWidth; canvas.height = video.videoHeight;
     canvas.getContext('2d').drawImage(video, 0, 0);
     const dataUrl = canvas.toDataURL('image/jpeg', 0.92);
     currentBase64 = dataUrl.split(',')[1];
@@ -462,11 +422,11 @@
   }
 
   function resetAll() {
-    currentBase64 = null;
-    stopCamera();
+    currentBase64 = null; stopCamera();
     document.getElementById('preview-area').style.display = 'none';
     document.getElementById('result-area').style.display = 'none';
     document.getElementById('loading-area').style.display = 'none';
+    document.getElementById('shop-card').style.display = 'none';
     document.getElementById('file-input').value = '';
   }
 
@@ -474,10 +434,10 @@
     if (!currentBase64) { showToast('📷 Спочатку завантажте фото'); return; }
 
     const btn = document.getElementById('analyze-btn');
-    btn.disabled = true;
-    btn.textContent = '⏳ Аналізую...';
+    btn.disabled = true; btn.textContent = '⏳ Аналізую...';
     document.getElementById('loading-area').style.display = 'block';
     document.getElementById('result-area').style.display = 'none';
+    document.getElementById('shop-card').style.display = 'none';
 
     let msgIdx = 0;
     const interval = setInterval(() => {
@@ -489,27 +449,26 @@
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
+          action: 'analyze',
           content: [
-            {
-              type: 'image_url',
-              image_url: { url: `data:image/jpeg;base64,${currentBase64}` }
-            },
+            { type: 'image_url', image_url: { url: `data:image/jpeg;base64,${currentBase64}` } },
             {
               type: 'text',
-              text: `Ти експерт з кавового обладнання. Проаналізуй фото і визнач що зображено.
+              text: `Ти експерт з кавового обладнання. Проаналізуй фото.
 
 Відповідай ТІЛЬКИ у форматі JSON без markdown:
 {
   "is_coffee_equipment": true або false,
-  "equipment_type": "кавомашина еспресо / автоматична кавомашина / кавомолка / пуровер / аеропрес / кемекс / мока / турка / капсульна кавомашина / інше",
+  "equipment_type": "тип обладнання",
   "brand": "бренд або 'Не визначено'",
   "model": "модель або 'Не визначено'",
-  "year_range": "рік або діапазон або null",
+  "year_range": "рік або null",
   "confidence": "висока / середня / низька",
   "description": "Опис 2-3 речення",
-  "key_features": ["особливість 1", "особливість 2", "особливість 3", "особливість 4"],
+  "key_features": ["особливість 1", "особливість 2", "особливість 3"],
   "price_range": "ціна в USD або null",
-  "coffee_types": ["напій 1", "напій 2"]
+  "coffee_types": ["напій 1", "напій 2"],
+  "search_query": "найкращий пошуковий запит для пошуку цього обладнання на сайті магазину (бренд + модель, коротко, лише якщо is_coffee_equipment=true)"
 }`
             }
           ]
@@ -524,6 +483,12 @@
 
       renderResult(result);
 
+      // Якщо це кавове обладнання — запускаємо пошук на coffeeone.com.ua
+      if (result && result.is_coffee_equipment) {
+        const query = result.search_query || [result.brand, result.model].filter(v => v && v !== 'Не визначено').join(' ');
+        if (query) searchCoffeeOne(query, result.brand, result.model);
+      }
+
     } catch (err) {
       document.getElementById('result-body').innerHTML = `
         <div style="padding:12px 0">
@@ -536,8 +501,68 @@
 
     clearInterval(interval);
     document.getElementById('loading-area').style.display = 'none';
-    btn.disabled = false;
-    btn.textContent = '🔍 Розпізнати обладнання';
+    btn.disabled = false; btn.textContent = '🔍 Розпізнати обладнання';
+  }
+
+  // ── Пошук на coffeeone.com.ua ──────────────────
+  async function searchCoffeeOne(query, brand, model) {
+    document.getElementById('shop-card').style.display = 'block';
+    document.getElementById('shop-body').innerHTML = '<div class="shop-loading">⏳ Шукаємо на coffeeone.com.ua...</div>';
+
+    try {
+      const response = await fetch('/.netlify/functions/analyze', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'search', query })
+      });
+
+      const data = await response.json();
+      renderShopResults(data, query, brand, model);
+
+    } catch (err) {
+      renderShopResults({ products: [], searchUrl: `https://coffeeone.com.ua/uk/index.php?route=product/search&search=${encodeURIComponent(query)}` }, query, brand, model);
+    }
+  }
+
+  function renderShopResults(data, query, brand, model) {
+    const body = document.getElementById('shop-body');
+    const searchUrl = data.searchUrl || `https://coffeeone.com.ua/uk/index.php?route=product/search&search=${encodeURIComponent(query)}`;
+    const products = data.products || [];
+
+    if (products.length === 0) {
+      // Товар не знайдено — показуємо кнопку пошуку
+      const displayName = [brand, model].filter(v => v && v !== 'Не визначено').join(' ') || query;
+      body.innerHTML = `
+        <p style="font-size:13px;color:var(--text2);margin-bottom:14px;line-height:1.6">
+          Точний збіг не знайдено, але на coffeeone.com.ua може бути схоже обладнання або аналоги.
+        </p>
+        <a href="${searchUrl}" target="_blank" rel="noopener" class="shop-search-btn">
+          🔎 Шукати «${displayName}» на coffeeone.com.ua
+        </a>`;
+      return;
+    }
+
+    // Знайдені товари
+    const productsHTML = products.map(p => `
+      <a href="${p.url}" target="_blank" rel="noopener" class="product-item">
+        <img
+          class="product-img"
+          src="${p.img}"
+          alt="${p.name}"
+          onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2270%22 height=%2270%22><rect width=%2270%22 height=%2270%22 fill=%22%23E1EBF7%22/><text x=%2235%22 y=%2242%22 text-anchor=%22middle%22 font-size=%2228%22>☕</text></svg>'"
+        >
+        <div class="product-info">
+          <div class="product-name">${p.name}</div>
+          ${p.price ? `<div class="product-price">${p.price}</div>` : '<div style="font-size:12px;color:var(--text3)">Уточнюйте ціну</div>'}
+        </div>
+        <div class="product-arrow">›</div>
+      </a>`).join('');
+
+    body.innerHTML = `
+      <div class="product-list">${productsHTML}</div>
+      <a href="${searchUrl}" target="_blank" rel="noopener" class="shop-search-btn">
+        🔎 Всі результати на coffeeone.com.ua
+      </a>`;
   }
 
   function renderResult(result) {
@@ -577,14 +602,13 @@
       ${result.description ? `<div class="result-desc">${result.description}</div>` : ''}
       ${featsHTML ? `<div class="features-title">Характеристики</div><ul class="features-list">${featsHTML}</ul>` : ''}
       ${tagsHTML  ? `<div class="tags-wrap">${tagsHTML}</div>` : ''}
-      ${result.price_range ? `<div><div class="price-badge">💰 ${result.price_range}</div></div>` : ''}
+      ${result.price_range ? `<div style="margin-top:16px"><span style="display:inline-flex;align-items:center;gap:7px;padding:8px 16px;background:var(--btn);color:#fff;border-radius:20px;font-size:13px;font-weight:600">💰 ${result.price_range}</span></div>` : ''}
     `;
   }
 
   function showToast(msg) {
     const t = document.getElementById('toast');
-    t.textContent = msg;
-    t.classList.add('show');
+    t.textContent = msg; t.classList.add('show');
     setTimeout(() => t.classList.remove('show'), 2800);
   }
 </script>
