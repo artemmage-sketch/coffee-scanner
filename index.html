@@ -470,11 +470,9 @@
 
       // Якщо це кавове обладнання — запускаємо пошук на coffeeone.com.ua по бренду
       if (result && result.is_coffee_equipment) {
-        // Шукаємо спочатку по бренду — так більше результатів
-        const searchQuery = result.search_brand ||
-          (result.brand !== 'Не визначено' ? result.brand : null) ||
-          result.model;
-        if (searchQuery) searchCoffeeOne(searchQuery, result.brand, result.model);
+        const brand = result.brand !== 'Не визначено' ? result.brand : '';
+        const query = result.search_brand || brand || result.model || '';
+        if (query) searchCoffeeOne(query, result.brand, result.model);
       }
 
     } catch (err) {
@@ -501,12 +499,10 @@
       const response = await fetch('/.netlify/functions/analyze', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ action: 'search', query })
+        body: JSON.stringify({ action: 'search', query, brand: brand || query })
       });
-
       const data = await response.json();
       renderShopResults(data, query, brand, model);
-
     } catch (err) {
       renderShopResults({ products: [], searchUrl: `https://coffeeone.com.ua/uk/index.php?route=product/search&search=${encodeURIComponent(query)}` }, query, brand, model);
     }
@@ -514,32 +510,33 @@
 
   function renderShopResults(data, query, brand, model) {
     const body = document.getElementById('shop-body');
-    const searchUrl = data.searchUrl || `https://coffeeone.com.ua/uk/index.php?route=product/search&search=${encodeURIComponent(query)}`;
     const products = data.products || [];
+    const searchUrl = data.searchUrl || `https://coffeeone.com.ua/uk/index.php?route=product/search&search=${encodeURIComponent(query)}`;
+    const brandFound = data.brandFound;
 
     if (products.length === 0) {
-      const displayName = brand !== 'Не визначено' ? brand : query;
+      const displayName = brand && brand !== 'Не визначено' ? brand : query;
       body.innerHTML = `
         <p style="font-size:13px;color:var(--text2);margin-bottom:14px;line-height:1.6">
-          Точний збіг не знайдено — можливо такої моделі немає в наявності. Перегляньте всі товари бренду.
+          ${brandFound
+            ? `На coffeeone.com.ua є сторінка бренду <strong>${displayName}</strong> — перегляньте всі доступні моделі:`
+            : `Бренд <strong>${displayName}</strong> не знайдено в каталозі coffeeone.com.ua. Можливо є схоже обладнання:`
+          }
         </p>
         <a href="${searchUrl}" target="_blank" rel="noopener" class="shop-search-btn">
-          🔎 Шукати «${displayName}» на coffeeone.com.ua
+          🔎 Переглянути ${displayName} на coffeeone.com.ua
         </a>`;
       return;
     }
 
-    const modelName = model !== 'Не визначено' ? model : '';
-    const intro = modelName
-      ? `<p style="font-size:13px;color:var(--text2);margin-bottom:14px;line-height:1.6">Знайдено <strong>${products.length}</strong> товарів бренду <strong>${brand}</strong> на coffeeone.com.ua. Можливо серед них є саме ця або схожа модель:</p>`
-      : `<p style="font-size:13px;color:var(--text2);margin-bottom:14px;line-height:1.6">Знайдено <strong>${products.length}</strong> товарів на coffeeone.com.ua:</p>`;
+    const modelName = model && model !== 'Не визначено' ? model : '';
+    const intro = `<p style="font-size:13px;color:var(--text2);margin-bottom:14px;line-height:1.6">
+      Знайдено <strong>${products.length}</strong> товарів бренду <strong>${brand}</strong> на coffeeone.com.ua${modelName ? ` — шукайте модель <strong>${modelName}</strong>` : ''}:
+    </p>`;
 
     const productsHTML = products.map(p => `
       <a href="${p.url}" target="_blank" rel="noopener" class="product-item">
-        <img
-          class="product-img"
-          src="${p.img}"
-          alt="${p.name}"
+        <img class="product-img" src="${p.img}" alt="${p.name}"
           onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2270%22 height=%2270%22><rect width=%2270%22 height=%2270%22 fill=%22%23E1EBF7%22/><text x=%2235%22 y=%2242%22 text-anchor=%22middle%22 font-size=%2228%22>☕</text></svg>'"
         >
         <div class="product-info">
@@ -553,7 +550,7 @@
       ${intro}
       <div class="product-list">${productsHTML}</div>
       <a href="${searchUrl}" target="_blank" rel="noopener" class="shop-search-btn" style="margin-top:4px">
-        🔎 Всі результати на coffeeone.com.ua
+        🔎 Всі товари бренду на coffeeone.com.ua
       </a>`;
   }
 
