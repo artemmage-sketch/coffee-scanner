@@ -26,13 +26,17 @@ exports.handler = async function (event) {
               role: "system",
               content: `Ти — досвідчений технічний спостерігач. Твоя задача: детально описати що ти бачиш на фото.
 Опиши:
-- Чи є на корпусі логотип, напис, назва бренду або моделі? Якщо так — процитуй точно що написано
-- Загальна форма та розміри пристрою
-- Колір та матеріал корпусу
-- Наявність та розташування: кнопок, дисплею, рукоятки, носика, бункера для зерен, парової трубки, групи
-- Будь-які унікальні або характерні деталі
-- Що знаходиться навколо пристрою (контекст)
-Відповідай детально, фактично, без здогадок про бренд чи модель.`
+- Чи є на корпусі логотип, напис, назва бренду або моделі? Якщо так — процитуй ТОЧНО що написано, де розташовано (спереду внизу / зверху / збоку)
+- Загальна форма та розміри пристрою (компактна / середня / велика)
+- Колір та матеріал корпусу (глянець / матовий / нержавійка / пластик)
+- Скільки груп (портафільтрів) видно?
+- Наявність та точне розташування: манометрів (скільки і де), кнопок (скільки і де), дисплею (є/немає, який), парової трубки (форма), водяної трубки
+- Чи є підсвітка на групі або корпусі?
+- Форма та стиль ручок управління (кнопки / важелі / паддли / сенсор)
+- Що знаходиться на задній або бічній панелі якщо видно
+- Будь-які написи на кнопках, шильдику, серійному номері
+- Що знаходиться навколо пристрою (контекст, фон)
+Відповідай дуже детально і фактично. НЕ вгадуй бренд чи модель — тільки описуй що бачиш.`
             },
             { role: "user", content: body.content }
           ],
@@ -67,7 +71,14 @@ exports.handler = async function (event) {
 - Saeco/Philips: округлі форми, LatteGo система молока, 3200/4300/5400 серії
 - Gaggia: Classic Pro (ретро стиль), Babila, Magenta Plus
 - Breville/Sage: Barista Express (вбудована кавомолка), Oracle, Bambino
-- La Marzocco: Linea Mini, GS3 — преміум з характерним подвійним бойлером
+- La Marzocco: ДУЖЕ ВАЖЛИВО розрізняти моделі:
+  * Linea Classic / Linea Classic S — прямокутний корпус, 2 манометри зліва, кнопки праворуч, немає дисплею, класичний вигляд. Є 1, 2, 3-групові версії
+  * Linea PB (AV/EE) — схожа на Classic але сучасніша, є LED підсвітка на групі, часто з автоматичним дозуванням, кнопки більш сучасні
+  * GS/3 — компактна преміум-модель для дому, характерний виступаючий корпус зверху, дуже впізнаваний дизайн
+  * Linea Mini — найменша домашня модель, компактна, один бойлер, лаконічний дизайн без манометрів спереду
+  * KB90 — професійна, група нахилена вперед (Forward Facing Group), дуже сучасний вигляд
+  * Strada — велика професійна, паддл-важелі замість кнопок
+  * Відрізняй по: наявність манометрів (Classic/PB = 2 манометри), наявність дисплею, форма ручок групи, підсвітка
 - Nuova Simonelli: Appia, Oscar, Musica — професійні
 - Nespresso: капсульні Vertuo/Original, Pixie, Creatista, Lattissima
 - Кавомолки — Eureka Mignon/Atom, Mahlkönig EK43/Peak/X54, Mazzer Mini/Kony/Major, Baratza Encore/Virtuoso, Fellow Ode, Comandante (ручна)
@@ -112,62 +123,110 @@ exports.handler = async function (event) {
 
     // ── 2. Пошук на coffeeone.com.ua ────────────────────────────────────────
     if (action === "search") {
-      const query = encodeURIComponent(body.query || "");
-      const searchUrl = `https://coffeeone.com.ua/uk/index.php?route=product/search&search=${query}`;
+      const brand = (body.brand || "").toLowerCase().trim();
 
-      const res = await fetch(searchUrl, {
-        headers: {
-          "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/120 Safari/537.36",
-          "Accept-Language": "uk-UA,uk;q=0.9",
-          "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
-        },
-      });
+      // Прямі посилання на сторінки брендів на coffeeone.com.ua
+      const brandPages = {
+        "jura":             "https://coffeeone.com.ua/uk/all-products/auto-coffee/jura-automatic-coffee-machines",
+        "saeco":            "https://coffeeone.com.ua/uk/all-products/auto-coffee/saeco",
+        "philips":          "https://coffeeone.com.ua/uk/all-products/auto-coffee/philips",
+        "delonghi":         "https://coffeeone.com.ua/uk/all-products/auto-coffee/delonghi",
+        "de'longhi":        "https://coffeeone.com.ua/uk/all-products/auto-coffee/delonghi",
+        "de longhi":        "https://coffeeone.com.ua/uk/all-products/auto-coffee/delonghi",
+        "gaggia":           "https://coffeeone.com.ua/uk/all-products/professional-coffeemachines/gaggia",
+        "nuova simonelli":  "https://coffeeone.com.ua/uk/all-products/professional-coffeemachines/nuova-simonelli",
+        "la marzocco":      "https://coffeeone.com.ua/uk/all-products/professional-coffeemachines/la-marzocco",
+        "astoria":          "https://coffeeone.com.ua/uk/all-products/professional-coffeemachines/astoria",
+        "bfc":              "https://coffeeone.com.ua/uk/all-products/professional-coffeemachines/bfc",
+        "rancilio":         "https://coffeeone.com.ua/uk/all-products/professional-coffeemachines/rancilio",
+        "rocket":           "https://coffeeone.com.ua/uk/all-products/professional-coffeemachines/rocket-espresso",
+        "rocket espresso":  "https://coffeeone.com.ua/uk/all-products/professional-coffeemachines/rocket-espresso",
+        "ecm":              "https://coffeeone.com.ua/uk/all-products/professional-coffeemachines/ecm",
+        "wega":             "https://coffeeone.com.ua/uk/all-products/professional-coffeemachines/wega",
+        "iberital":         "https://coffeeone.com.ua/uk/all-products/professional-coffeemachines/iberital",
+        "nespresso":        "https://coffeeone.com.ua/uk/all-products/prepared-coffee-machines/nespresso",
+        "krups":            "https://coffeeone.com.ua/uk/all-products/prepared-coffee-machines/krups",
+        "eureka":           "https://coffeeone.com.ua/uk/all-products/professional-coffee-grinders/eureka",
+        "mahlkonig":        "https://coffeeone.com.ua/uk/all-products/professional-coffee-grinders/mahlkonig",
+        "mahlkönig":        "https://coffeeone.com.ua/uk/all-products/professional-coffee-grinders/mahlkonig",
+        "mazzer":           "https://coffeeone.com.ua/uk/all-products/professional-coffee-grinders/mazzer",
+        "fiorenzato":       "https://coffeeone.com.ua/uk/all-products/professional-coffee-grinders/fiorenzato",
+        "anfim":            "https://coffeeone.com.ua/uk/all-products/professional-coffee-grinders/anfim",
+        "breville":         "https://coffeeone.com.ua/uk/all-products/auto-coffee/breville",
+        "sage":             "https://coffeeone.com.ua/uk/all-products/auto-coffee/breville",
+      };
 
-      if (!res.ok) {
-        return { statusCode: 200, body: JSON.stringify({ products: [], searchUrl }) };
+      // Знаходимо відповідну сторінку бренду
+      let brandUrl = null;
+      for (const [key, url] of Object.entries(brandPages)) {
+        if (brand.includes(key) || key.includes(brand)) {
+          brandUrl = url;
+          break;
+        }
       }
 
-      const html = await res.text();
-      const products = [];
+      // Якщо бренд не знайдено — загальний пошук
+      const searchUrl = brandUrl ||
+        `https://coffeeone.com.ua/uk/index.php?route=product/search&search=${encodeURIComponent(body.query || brand)}`;
 
-      // Парсимо посилання + зображення — всі результати пошуку
-      const linkRegex = /href="(https:\/\/coffeeone\.com\.ua\/[^"]*\.html)"[^>]*>\s*<img[^>]*src="([^"]+)"[^>]*alt="([^"]*)"[^>]*>/g;
-      const seen = new Set();
-
-      for (const match of html.matchAll(linkRegex)) {
-        const url = match[1];
-        const img = match[2];
-        const name = match[3];
-
-        if (seen.has(url) || !name || name.length < 3) continue;
-        seen.add(url);
-
-        const urlIndex = html.indexOf(url);
-        const chunk = html.substring(urlIndex, urlIndex + 1500);
-
-        // Шукаємо ціну в гривнях або євро
-        const uahMatch = chunk.match(/([\d\s]{3,})\s*грн/);
-        const eurMatch = chunk.match(/([\d]+)\s*€/);
-        const price = uahMatch
-          ? uahMatch[1].trim().replace(/\s+/g, " ") + " грн"
-          : eurMatch ? eurMatch[1] + " €" : null;
-
-        products.push({
-          name: name.trim(),
-          url,
-          img: img.startsWith("http") ? img : "https://coffeeone.com.ua" + img,
-          price,
+      // Отримуємо сторінку і парсимо товари
+      try {
+        const res = await fetch(searchUrl, {
+          headers: {
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/120 Safari/537.36",
+            "Accept-Language": "uk-UA,uk;q=0.9",
+            "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+          },
         });
 
-        // Показуємо до 6 результатів
-        if (products.length >= 6) break;
-      }
+        if (!res.ok) {
+          return { statusCode: 200, body: JSON.stringify({ products: [], searchUrl, brandFound: !!brandUrl }) };
+        }
 
-      return {
-        statusCode: 200,
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ products, searchUrl, total: products.length }),
-      };
+        const html = await res.text();
+        const products = [];
+        const seen = new Set();
+
+        const linkRegex = /href="(https:\/\/coffeeone\.com\.ua\/[^"]*\.html)"[^>]*>\s*<img[^>]*src="([^"]+)"[^>]*alt="([^"]*)"[^>]*>/g;
+
+        for (const match of html.matchAll(linkRegex)) {
+          const url = match[1];
+          const img = match[2];
+          const name = match[3];
+
+          if (seen.has(url) || !name || name.length < 3) continue;
+          seen.add(url);
+
+          const urlIndex = html.indexOf(url);
+          const chunk = html.substring(urlIndex, urlIndex + 1500);
+          const uahMatch = chunk.match(/([\d][\d\s]{2,})\s*грн/);
+          const eurMatch = chunk.match(/([\d]+)\s*€/);
+          const price = uahMatch
+            ? uahMatch[1].trim().replace(/\s+/g, " ") + " грн"
+            : eurMatch ? eurMatch[1] + " €" : null;
+
+          products.push({
+            name: name.trim(),
+            url,
+            img: img.startsWith("http") ? img : "https://coffeeone.com.ua" + img,
+            price,
+          });
+
+          if (products.length >= 6) break;
+        }
+
+        return {
+          statusCode: 200,
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ products, searchUrl, brandFound: !!brandUrl, total: products.length }),
+        };
+
+      } catch (err) {
+        return {
+          statusCode: 200,
+          body: JSON.stringify({ products: [], searchUrl, brandFound: !!brandUrl, error: err.message }),
+        };
+      }
     }
 
     return { statusCode: 400, body: JSON.stringify({ error: "Unknown action" }) };
