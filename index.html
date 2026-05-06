@@ -454,22 +454,7 @@
             { type: 'image_url', image_url: { url: `data:image/jpeg;base64,${currentBase64}` } },
             {
               type: 'text',
-              text: `Ти експерт з кавового обладнання. Проаналізуй фото.
-
-Відповідай ТІЛЬКИ у форматі JSON без markdown:
-{
-  "is_coffee_equipment": true або false,
-  "equipment_type": "тип обладнання",
-  "brand": "бренд або 'Не визначено'",
-  "model": "модель або 'Не визначено'",
-  "year_range": "рік або null",
-  "confidence": "висока / середня / низька",
-  "description": "Опис 2-3 речення",
-  "key_features": ["особливість 1", "особливість 2", "особливість 3"],
-  "price_range": "ціна в USD або null",
-  "coffee_types": ["напій 1", "напій 2"],
-  "search_query": "найкращий пошуковий запит для пошуку цього обладнання на сайті магазину (бренд + модель, коротко, лише якщо is_coffee_equipment=true)"
-}`
+              text: 'Уважно проаналізуй це фото кавового обладнання. Визнач бренд, модель та всі характеристики. Відповідай тільки JSON.'
             }
           ]
         })
@@ -600,6 +585,7 @@
         <div class="result-cell"><div class="cell-label">Рік</div><div class="cell-value" style="font-size:13px">${result.year_range || '—'}</div></div>
       </div>
       ${result.description ? `<div class="result-desc">${result.description}</div>` : ''}
+      ${result.visual_clues ? `<div style="font-size:12px;color:var(--text3);padding:10px 14px;background:var(--bg);border-radius:var(--radius);margin-bottom:18px;border:1px solid var(--border)">🔍 <em>${result.visual_clues}</em></div>` : ''}
       ${featsHTML ? `<div class="features-title">Характеристики</div><ul class="features-list">${featsHTML}</ul>` : ''}
       ${tagsHTML  ? `<div class="tags-wrap">${tagsHTML}</div>` : ''}
       ${result.price_range ? `<div style="margin-top:16px"><span style="display:inline-flex;align-items:center;gap:7px;padding:8px 16px;background:var(--btn);color:#fff;border-radius:20px;font-size:13px;font-weight:600">💰 ${result.price_range}</span></div>` : ''}
