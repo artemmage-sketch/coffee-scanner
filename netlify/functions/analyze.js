@@ -20,7 +20,7 @@ exports.handler = async function (event) {
         headers,
         body: JSON.stringify({
           model: "gpt-5.4",
-          max_tokens: 600,
+          max_completion_tokens: 600,
           messages: [
             {
               role: "system",
@@ -55,7 +55,7 @@ exports.handler = async function (event) {
         headers,
         body: JSON.stringify({
           model: "gpt-5.4",
-          max_tokens: 1000,
+          max_completion_tokens: 1000,
           messages: [
             {
               role: "system",
