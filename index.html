@@ -120,6 +120,50 @@
     #preview-img { width: 100%; display: block; max-height: 400px; object-fit: cover; }
     .preview-badge { position: absolute; top: 12px; right: 12px; background: var(--btn); color: #fff; border-radius: 20px; padding: 5px 13px; font-size: 12px; font-weight: 500; }
 
+    /* Photo Tips */
+    .photo-tips {
+      display: none;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 16px 18px 18px;
+      margin-bottom: 14px;
+      box-shadow: var(--shadow);
+    }
+
+    .tips-header {
+      display: flex; align-items: center; gap: 8px; margin-bottom: 12px;
+    }
+
+    .tips-title {
+      font-size: 11px; font-weight: 600; color: var(--text3);
+      text-transform: uppercase; letter-spacing: 0.07em;
+    }
+
+    .tips-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
+    }
+
+    .tip-item {
+      display: flex; align-items: flex-start; gap: 8px;
+      padding: 9px 11px; border-radius: var(--radius);
+      font-size: 12px; line-height: 1.5;
+    }
+
+    .tip-item.good {
+      background: rgba(46,125,82,0.07);
+      border: 1px solid rgba(46,125,82,0.2);
+    }
+
+    .tip-item.bad {
+      background: rgba(176,58,42,0.07);
+      border: 1px solid rgba(176,58,42,0.18);
+    }
+
+    .tip-mark { font-size: 13px; flex-shrink: 0; margin-top: 1px; }
+    .tip-text { font-weight: 600; color: var(--text); display: block; margin-bottom: 2px; }
+    .tip-sub  { color: var(--text3); font-size: 11px; display: block; }
+
     /* Loading */
     #loading-area { display: none; padding: 24px 0; text-align: center; }
     .loading-text { font-size: 14px; color: var(--text2); margin-bottom: 14px; }
@@ -163,19 +207,15 @@
     .tags-wrap { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 16px; }
     .tag { background: var(--bg3); border: 1px solid var(--border); border-radius: 20px; padding: 4px 12px; font-size: 12px; color: var(--text2); font-weight: 500; }
 
-    /* ── Shop block ─────────────────────────────── */
+    /* Shop block */
     .shop-card {
-      background: var(--surface);
-      border-radius: var(--radius-lg);
-      box-shadow: var(--shadow-lg);
-      border: 1px solid var(--border);
-      overflow: hidden;
-      margin-bottom: 16px;
+      background: var(--surface); border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-lg); border: 1px solid var(--border);
+      overflow: hidden; margin-bottom: 16px;
     }
 
     .shop-header {
-      background: var(--btn);
-      padding: 14px 22px;
+      background: var(--btn); padding: 14px 22px;
       display: flex; align-items: center; justify-content: space-between;
     }
 
@@ -185,25 +225,19 @@
 
     .shop-body { padding: 16px 20px 20px; }
 
-    /* Знайдені товари */
     .product-list { display: flex; flex-direction: column; gap: 12px; margin-bottom: 16px; }
 
     .product-item {
       display: flex; gap: 14px; align-items: center;
       padding: 12px; border-radius: var(--radius);
-      border: 1px solid var(--border);
-      background: var(--bg);
-      text-decoration: none;
-      transition: all 0.18s;
+      border: 1px solid var(--border); background: var(--bg);
+      text-decoration: none; transition: all 0.18s;
     }
-
     .product-item:hover { border-color: var(--btn); background: var(--bg3); transform: translateX(3px); }
 
     .product-img {
-      width: 70px; height: 70px;
-      border-radius: 8px; object-fit: contain;
-      background: #fff; border: 1px solid var(--border);
-      flex-shrink: 0;
+      width: 70px; height: 70px; border-radius: 8px; object-fit: contain;
+      background: #fff; border: 1px solid var(--border); flex-shrink: 0;
     }
 
     .product-info { flex: 1; min-width: 0; }
@@ -214,22 +248,15 @@
       display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
     }
 
-    .product-price {
-      font-size: 15px; font-weight: 600; color: var(--btn);
-    }
-
+    .product-price { font-size: 15px; font-weight: 600; color: var(--btn); }
     .product-arrow { color: var(--text3); font-size: 18px; flex-shrink: 0; }
 
-    /* Кнопка пошуку якщо не знайдено */
     .shop-search-btn {
       display: flex; align-items: center; justify-content: center; gap: 10px;
-      width: 100%; padding: 13px 20px;
-      border-radius: var(--radius); border: none;
+      width: 100%; padding: 13px 20px; border-radius: var(--radius); border: none;
       background: var(--btn); color: #fff;
-      font-size: 14px; font-weight: 600;
-      font-family: 'DM Sans', sans-serif;
-      cursor: pointer; text-decoration: none;
-      transition: all 0.18s;
+      font-size: 14px; font-weight: 600; font-family: 'DM Sans', sans-serif;
+      cursor: pointer; text-decoration: none; transition: all 0.18s;
       box-shadow: 0 2px 8px rgba(32,48,60,0.2);
     }
     .shop-search-btn:hover { background: var(--btn-hov); transform: translateY(-1px); }
@@ -260,6 +287,7 @@
     @media (max-width: 480px) {
       header { padding: 32px 0 28px; }
       .result-grid { grid-template-columns: 1fr; }
+      .tips-grid { grid-template-columns: 1fr; }
       .product-img { width: 56px; height: 56px; }
     }
   </style>
@@ -302,6 +330,59 @@
       <img id="preview-img" alt="Попередній перегляд">
       <div class="preview-badge">✓ Готово</div>
     </div>
+
+    <!-- Підказки для кращого розпізнавання -->
+    <div class="photo-tips" id="photo-tips">
+      <div class="tips-header">
+        <span style="font-size:16px">💡</span>
+        <span class="tips-title">Для точного результату</span>
+      </div>
+      <div class="tips-grid">
+        <div class="tip-item good">
+          <span class="tip-mark">✓</span>
+          <div>
+            <span class="tip-text">Логотип у кадрі</span>
+            <span class="tip-sub">Назва бренду має бути чітко видна</span>
+          </div>
+        </div>
+        <div class="tip-item good">
+          <span class="tip-mark">✓</span>
+          <div>
+            <span class="tip-text">Фото спереду</span>
+            <span class="tip-sub">Пряма фронтальна проекція</span>
+          </div>
+        </div>
+        <div class="tip-item good">
+          <span class="tip-mark">✓</span>
+          <div>
+            <span class="tip-text">Близько та різко</span>
+            <span class="tip-sub">Заповніть кадр машиною</span>
+          </div>
+        </div>
+        <div class="tip-item good">
+          <span class="tip-mark">✓</span>
+          <div>
+            <span class="tip-text">Гарне освітлення</span>
+            <span class="tip-sub">Уникайте тіней на написах</span>
+          </div>
+        </div>
+        <div class="tip-item bad">
+          <span class="tip-mark">✗</span>
+          <div>
+            <span class="tip-text">Здалека або збоку</span>
+            <span class="tip-sub">Деталі зливаються</span>
+          </div>
+        </div>
+        <div class="tip-item bad">
+          <span class="tip-mark">✗</span>
+          <div>
+            <span class="tip-text">Логотип поза кадром</span>
+            <span class="tip-sub">Без бренду — низька точність</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <button class="btn" onclick="analyzeImage()" id="analyze-btn" style="margin-bottom:10px">
       🔍 Розпізнати обладнання
     </button>
@@ -345,7 +426,7 @@
 </div>
 
 <footer>
-  Працює на базі <a href="https://openai.com" target="_blank" rel="noopener">OpenAI GPT-4o Vision</a><br>
+  Працює на базі <a href="https://openai.com" target="_blank" rel="noopener">OpenAI GPT-4.1 Vision</a><br>
   <a href="https://github.com/artemmage-sketch/coffee-scanner" target="_blank" rel="noopener">GitHub</a> · MIT License · Зроблено з ☕
 </footer>
 
@@ -357,8 +438,10 @@
 
   const loadingMessages = [
     'Аналізую форму та деталі...',
+    'Читаю логотип та написи...',
     'Порівнюю з базою моделей...',
     'Визначаю виробника...',
+    'Шукаю в інтернеті...',
     'Готую результат...'
   ];
 
@@ -390,6 +473,7 @@
     document.getElementById('camera-area').style.display = 'none';
     document.getElementById('result-area').style.display = 'none';
     document.getElementById('preview-area').style.display = 'block';
+    document.getElementById('photo-tips').style.display = 'block';
     const btn = document.getElementById('analyze-btn');
     btn.disabled = false;
     btn.textContent = '🔍 Розпізнати обладнання';
@@ -424,6 +508,7 @@
   function resetAll() {
     currentBase64 = null; stopCamera();
     document.getElementById('preview-area').style.display = 'none';
+    document.getElementById('photo-tips').style.display = 'none';
     document.getElementById('result-area').style.display = 'none';
     document.getElementById('loading-area').style.display = 'none';
     document.getElementById('shop-card').style.display = 'none';
@@ -438,11 +523,12 @@
     document.getElementById('loading-area').style.display = 'block';
     document.getElementById('result-area').style.display = 'none';
     document.getElementById('shop-card').style.display = 'none';
+    document.getElementById('photo-tips').style.display = 'none';
 
     let msgIdx = 0;
     const interval = setInterval(() => {
       document.getElementById('loading-text').textContent = loadingMessages[msgIdx++ % loadingMessages.length];
-    }, 1100);
+    }, 1200);
 
     try {
       const response = await fetch('/.netlify/functions/analyze', {
@@ -468,7 +554,6 @@
 
       renderResult(result);
 
-      // Якщо це кавове обладнання — запускаємо пошук на coffeeone.com.ua по бренду
       if (result && result.is_coffee_equipment) {
         const brand = result.brand !== 'Не визначено' ? result.brand : '';
         const query = result.search_brand || brand || result.model || '';
