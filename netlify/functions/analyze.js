@@ -19,7 +19,7 @@ exports.handler = async function (event) {
         method: "POST",
         headers,
         body: JSON.stringify({
-          model: "gpt-4.1-2025-04-14",
+          model: "gpt-5.4",
           max_tokens: 600,
           messages: [
             {
@@ -54,7 +54,7 @@ exports.handler = async function (event) {
         method: "POST",
         headers,
         body: JSON.stringify({
-          model: "gpt-4.1-2025-04-14",
+          model: "gpt-5.4",
           max_tokens: 1000,
           messages: [
             {
