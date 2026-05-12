@@ -24,33 +24,23 @@ exports.handler = async function (event) {
           messages: [
             {
               role: "system",
-              content: `Ти — надзвичайно уважний технічний спостерігач з гострим зором. Твоя єдина задача — описати все що бачиш на фото максимально точно і детально. Від якості твого опису залежить правильна ідентифікація пристрою.
+              content: `Ти — надзвичайно уважний технічний спостерігач з гострим зором. Твоя єдина задача — описати все що бачиш на фото максимально точно і детально.
 
-ОБОВ'ЯЗКОВО опиши кожен з цих пунктів:
+НАЙВАЖЛИВІШЕ — НАПИСИ ТА ЛОГОТИПИ:
+Уважно роздивись ВЕСЬ корпус пристрою. Чи є будь-які літери, слова, логотипи, цифри, символи? Де саме (спереду зверху/знизу/по центру, збоку, на панелі, на ручці)? Процитуй ТОЧНО кожну літеру і кожне слово — навіть якщо слово незрозуміле, частково видно або це незнайомий бренд. Не пропускай жодного напису. Це найважливіший пункт — від нього залежить правильна ідентифікація.
 
-1. НАПИСИ ТА ЛОГОТИПИ: Уважно роздивись весь корпус. Чи є будь-які літери, слова, логотипи, цифри? Де саме (спереду зверху/знизу/по центру, збоку, на панелі)? Процитуй ТОЧНО кожну літеру — навіть якщо слово незрозуміле або частково видно. Це найважливіший пункт.
+ТАКОЖ ОПИШИ:
+2. ФОРМА КОРПУСУ: Загальний силует — прямокутний / округлий / нестандартний. Розміри — компактна (домашня) / середня / велика (барна). Виступи зверху, бічні панелі, декоративні елементи.
+3. КОЛІР ТА МАТЕРІАЛ: Точний колір і матеріал — нержавійка / глянцевий пластик / матовий пластик / пофарбований метал / лакований.
+4. ГРУПИ (ПОРТАФІЛЬТРИ): Скільки груп? Яка форма голівки? Є підсвітка?
+5. МАНОМЕТРИ: Скільки? Де розташовані?
+6. ПАНЕЛЬ УПРАВЛІННЯ: Кількість і розташування кнопок, наявність дисплею (тип, що показує).
+7. ПАРОВА ТА ВОДЯНА ТРУБКА: Є? Форма, розташування.
+8. РУЧКИ УПРАВЛІННЯ: Кнопки / важелі / паддли / поворотні / сенсор?
+9. ДОДАТКОВІ ДЕТАЛІ: Підсвітка, бічні панелі, що видно зверху.
+10. КОНТЕКСТ: Де знаходиться пристрій, що є поруч.
 
-2. ФОРМА КОРПУСУ: Загальний силует — прямокутний / округлий / нестандартний. Розміри — компактна (домашня) / середня / велика (барна). Є чи немає виступів зверху, бічних панелей, декоративних елементів.
-
-3. КОЛІР ТА МАТЕРІАЛ: Точний колір (не просто "сірий" а "темно-сірий матовий" або "дзеркальна нержавійка"). Матеріал — нержавійка / глянцевий пластик / матовий пластик / пофарбований метал.
-
-4. ГРУПИ (ПОРТАФІЛЬТРИ): Скільки груп видно? Яка форма групової голівки? Є підсвітка навколо групи?
-
-5. МАНОМЕТРИ: Скільки круглих циферблатів (манометрів)? Де розташовані — зліва / по центру / справа / над групою? Який діаметр приблизно?
-
-6. ПАНЕЛЬ УПРАВЛІННЯ: Скільки кнопок і де? Є написи на кнопках? Є дисплей (LCD / OLED / світлодіодні індикатори / сенсорний)? Що показує дисплей якщо видно?
-
-7. ПАРОВА ТРУБКА: Є? Яка форма — пряма / вигнута / з джойстиком? Розташування — зліва / справа / по центрі?
-
-8. ВОДЯНА ТРУБКА: Є окрема трубка для гарячої води?
-
-9. РУЧКИ УПРАВЛІННЯ: Кнопки / важелі / паддли (горизонтальні важелі) / поворотні регулятори / сенсор? Де розташовані?
-
-10. ДОДАТКОВІ ДЕТАЛІ: Підсвітка — де і якого кольору? Що на бічних панелях? Що видно зверху (бойлер / решітка / кришка)?
-
-11. КОНТЕКСТ: Де знаходиться пристрій — кав'ярня / дім / виставка? Що є поруч?
-
-Відповідай українською, дуже детально і фактично. НЕ вгадуй і НЕ припускай бренд чи модель — тільки описуй що реально бачиш.`
+Відповідай українською, дуже детально і фактично. НЕ вгадуй бренд чи модель — тільки описуй що реально бачиш.`
             },
             { role: "user", content: body.content }
           ],
@@ -66,7 +56,7 @@ exports.handler = async function (event) {
       }
       const visualDescription = step1Data.choices[0].message.content;
 
-      // ЕТАП 2 — ідентифікація на основі опису (внутрішня база знань)
+      // ЕТАП 2 — ідентифікація на основі опису
       const step2 = await fetch("https://api.openai.com/v1/chat/completions", {
         method: "POST",
         headers,
@@ -76,14 +66,26 @@ exports.handler = async function (event) {
           messages: [
             {
               role: "system",
-              content: `Ти — експерт світового рівня з кавового обладнання з 30-річним досвідом. Ти особисто бачив, тестував і обслуговував тисячі машин. Знаєш напам'ять зовнішній вигляд кожної моделі.
+              content: `Ти — експерт світового рівня з кавового обладнання з 30-річним досвідом. Знаєш напам'ять тисячі моделей з усього світу.
 
-Тобі нададуть детальний зоровий опис пристрою. Твоя задача — максимально точно визначити бренд і модель.
+Тобі нададуть детальний зоровий опис пристрою. Визнач бренд і модель.
 
-АЛГОРИТМ ІДЕНТИФІКАЦІЇ:
-1. Якщо в описі є ТОЧНИЙ логотип або назва бренду/моделі — це абсолютний пріоритет
-2. Якщо логотипу немає — аналізуй комбінацію унікальних візуальних ознак
-3. Якщо не впевнений у моделі — краще вкажи правильний бренд і серію, ніж вигадай модель
+АЛГОРИТМ ІДЕНТИФІКАЦІЇ — ДОТРИМУЙСЯ СУВОРО:
+
+КРОК 1 — ЛОГОТИП (найвищий пріоритет):
+Якщо в описі згадується будь-який напис або логотип на корпусі пристрою — це АБСОЛЮТНИЙ пріоритет.
+- Використовуй САМЕ ЦЕЙ текст як назву бренду, дослівно
+- НІКОЛИ не заміняй прочитаний напис іншим брендом зі своєї бази
+- Якщо бренд тобі невідомий або незнайомий — це нормально. Просто вкажи його як є
+- Новий, регіональний, нішевий або маловідомий бренд — все одно вказуй дослівно
+- Якщо модель на логотипі теж написана — вкажи її
+
+КРОК 2 — ЯКЩО ЛОГОТИПУ НЕМАЄ:
+Аналізуй комбінацію візуальних ознак з бази знань нижче.
+
+КРОК 3 — НЕВПЕВНЕНІСТЬ:
+Якщо не можеш визначити модель — вкажи правильний бренд і "Не визначено" для моделі.
+НІКОЛИ не вигадуй неіснуючі моделі.
 
 БАЗА ЗНАНЬ:
 
@@ -97,48 +99,78 @@ LA MARZOCCO:
 • KB90: Forward Facing Group — група нахилена ВПЕРЕД до баріста, сучасний геометричний вигляд
 • Strada: великі горизонтальні ПАДДЛИ замість кнопок, масивна машина
 
-NUOVA SIMONELLI / VICTORIA ARDUINO:
+NUOVA SIMONELLI / VICTORIA ARDUINO (один виробник):
 • Appia Life / Appia II: класична барна, прямокутна, кнопки на групі, 1-3 групи
 • Aurelia Wave / Aurelia II: преміум, сенсорний дисплей на кожній групі
 • Oscar II: домашня/напівпрофесійна, компактна, одна група
 • Black Eagle / Maverick: флагманська преміум
-• Victoria Arduino White Eagle / Black Eagle Gravitech: преміум дизайн з великим дисплеєм
+• Victoria Arduino White Eagle / Black Eagle Gravitech / Adonis: преміум з великим дисплеєм
+• Mythos: кавомолка, висока та вузька
 
-SYNESSO: MVP Hydra / S-Series — американська, висока панель управління, кнопки/паддли
+SYNESSO: MVP / MVP Hydra / S-Series — американська, висока панель управління, кнопки/паддли
 SLAYER: Single Group / Steam EP — американська преміум, паддли, деревʼяні вставки (горіх/бамбук)
 KEES VAN DER WESTEN: Mirage / Spirit — нідерландська, авангардний дизайн, вигнуті форми, паддли
-SANREMO: Cafe Racer (мотоциклетний стиль), Opera / You, F18 / X ONE
-LELIT: Bianca (паддль + дерев'яні ручки), MaraX (термосифон)
-ROCKET ESPRESSO: R9/R58 (манометри + мідні деталі), Appartamento (круглі отвори на боках)
-ECM: Synchronika / Classika — нержавійка, манометр по центрі зверху
+KASTOR: український бренд, професійні барні еспресо-машини
+ASTORIA: Storm / Tanya / Plus4You / Gloria / Core / Lisa — барні машини різних серій
+SANREMO: Cafe Racer, Opera / You, F18 / X ONE, Torino
+LELIT: Bianca (паддль + дерев'яні ручки), MaraX (термосифон), Elizabeth, Victoria
+ROCKET ESPRESSO: R9/R58 (манометри + мідні деталі), Appartamento (круглі отвори на боках), Boxer
+ECM: Synchronika / Classika / Technika — нержавійка, манометр по центрі зверху
 RANCILIO: Classe 5/7/9/11 (барні), Silvia (маленька домашня нержавійка)
-ASTORIA / WEGA: класичні барні машини
+WEGA: Polaris / Orion / Concept / Pegaso — барні, заокруглена верхня панель
+BFC: De Lux / Antelao / Classica — італійські барні машини
+IBERITAL: Expression / L'Anna / MC2 — іспанські барні машини
+FIAMMA: Caravel / Lambro — класичні італійські барні машини
+BRUGNETTI: Alexia / Giulia — нішеві італійські машини
+AURORA: барні машини
+BEZZERA: Matrix / BZ / Magica / Mitica — італійські барні/домашні машини
+MACAP: кавомолки різних серій
+
+=== СУПЕРАВТОМАТИ PROFESSIONAL ===
+DR. COFFEE: F11 / F16 / Coffee Center CCM — сучасні суперавтомати з великими дисплеями
+RHEAVENDORS: rhea BL / rhTT — вендингові суперавтомати
+TALIA: барні суперавтомати
 
 === МАСОВИЙ РИНОК ===
 DE'LONGHI: Dedica (вузька 15см), La Specialista, Magnifica/Dinamica (суперавтомат)
-JURA: E6/E8 (кольоровий дисплей по центру), S8, Z10, ENA
+JURA: E6/E8 (кольоровий дисплей по центру), S8, Z10, ENA — швидкознімний капучинатор
 SAECO/PHILIPS: LatteGo система молока, 3200/4300/5400 серії
-GAGGIA: Classic Pro (ретро, нержавійка)
+GAGGIA: Classic Pro (ретро, нержавійка), Babila, Magenta
 BREVILLE/SAGE: Barista Express (кавомолка зверху), Oracle, Bambino
-NESPRESSO: капсульна, компактна
+NESPRESSO: капсульна, компактна, відсік для капсул
+KRUPS: суперавтомати та напівавтомати
 
 === КАВОМОЛКИ ===
-Mahlkönig EK43 (великий 98мм бур, горизонтальний вихід), Peak/X54
-Eureka Mignon (вузька, компактна), Atom (барна)
-Mazzer Mini/Super Jolly/Kony/Major
-Baratza Encore/Virtuoso, Fellow Ode (пласка мінімалістична)
-Comandante/Kinu/1Zpresso (ручні, циліндричні)
+MAHLKÖNIG / MAHLKOENIG: EK43 (великий 98мм бур, горизонтальний вихід), Peak, X54, Guatemala
+EUREKA: Mignon Silenzio/Specialita/Oro (вузька компактна), Atom (барна)
+MAZZER: Mini / Super Jolly / Kony / Major — класичні форми
+ANFIM: CODY / SP II — барні кавомолки
+FIORENZATO: F64 / F83 / AllGround — сучасні кавомолки
+OTTO FLORENCE: Dante — преміум кавомолки
+ACAIA: ваги для кави (Lunar / Pearl / Pyxis)
+MACAP: M2 / M4 / M7 — барні кавомолки
+BARATZA: Encore / Virtuoso — домашні пластиковий корпус
+FELLOW ODE: дуже мінімалістична, пласка, домашня
+COMANDANTE / KINU / 1ZPRESSO: ручні, циліндрична форма
 
-ПРАВИЛА:
-- НІКОЛИ не вигадуй неіснуючі моделі
-- Якщо бренд відомий але модель непевна — вкажи серію
-- Для рідкісних брендів — краще низька впевненість з правильним брендом
+=== ОБЛАДНАННЯ ДЛЯ МОРОЗИВА ===
+TAYLOR: фризери для м'якого морозива та мілкшейків
+
+=== АКСЕСУАРИ ===
+ACAIA: ваги (Lunar, Pearl, Pyxis — круглі або прямокутні з дисплеєм)
+BARISTA SPACE / BARISTA BASICS: темпери, дистрибʼютори, аксесуари
+BEAUMONT: молочники, аксесуари
+BRAVILOR BONAMAT: фільтрові кавоварки, термоси
+AGE: обладнання для кав'ярень
+LIBERTY'S: аксесуари
+REMIDAG: обладнання
+MAKITA: інструменти (не кавове обладнання)
 
 Відповідай ТІЛЬКИ JSON без markdown:
 {
   "is_coffee_equipment": true або false,
   "equipment_type": "тип обладнання українською",
-  "brand": "бренд або 'Не визначено'",
+  "brand": "бренд ДОСЛІВНО як написано на логотипі, або визначений по вигляду, або 'Не визначено'",
   "model": "модель або серія або 'Не визначено'",
   "year_range": "рік або діапазон або null",
   "confidence": "висока / середня / низька",
@@ -146,9 +178,9 @@ Comandante/Kinu/1Zpresso (ручні, циліндричні)
   "key_features": ["особливість 1", "особливість 2", "особливість 3", "особливість 4"],
   "price_range": "орієнтовна ціна USD або null",
   "coffee_types": ["напій 1", "напій 2"],
-  "visual_clues": "що саме допомогло визначити: логотип / форма / деталі",
+  "visual_clues": "що саме допомогло визначити: який конкретний напис прочитано / які форми",
   "search_brand": "назва бренду латиницею для пошуку або null",
-  "search_query": "точний пошуковий запит англійською для уточнення моделі, наприклад 'La Marzocco Linea Classic 2 group espresso machine' або null якщо впевненість висока і бренд відомий"
+  "search_query": "пошуковий запит англійською для уточнення, наприклад 'Kastor espresso machine professional 2gr' або null якщо впевненість висока"
 }`
             },
             {
@@ -174,7 +206,6 @@ Comandante/Kinu/1Zpresso (ручні, циліндричні)
         identification = null;
       }
 
-      // Якщо не кавове обладнання — одразу повертаємо результат
       if (!identification || !identification.is_coffee_equipment) {
         return {
           statusCode: 200,
@@ -183,10 +214,12 @@ Comandante/Kinu/1Zpresso (ручні, циліндричні)
         };
       }
 
-      // ЕТАП 3 — веб-пошук для уточнення (тільки якщо є що шукати)
+      // ЕТАП 3 — веб-пошук для уточнення
       const needsWebSearch =
         identification.search_query &&
-        (identification.confidence === "низька" || identification.confidence === "середня" || identification.model === "Не визначено");
+        (identification.confidence === "низька" ||
+          identification.confidence === "середня" ||
+          identification.model === "Не визначено");
 
       if (needsWebSearch) {
         try {
@@ -199,21 +232,18 @@ Comandante/Kinu/1Zpresso (ручні, циліндричні)
               messages: [
                 {
                   role: "system",
-                  content: `Ти — експерт з кавового обладнання. Твоя задача — знайти в інтернеті точну інформацію про пристрій за пошуковим запитом.
-
-Шукай інформацію про: точну назву моделі, технічні характеристики, рік випуску, орієнтовну ціну.
-
-ВАЖЛИВО: Ти можеш шукати будь-де в інтернеті для збору інформації про пристрій. Але у своїй відповіді НЕ згадуй жодних інтернет-магазинів, сайтів для покупки, цін з конкретних магазинів. Тільки технічна інформація про модель.
-
+                  content: `Ти — експерт з кавового обладнання. Знайди в інтернеті точну інформацію про пристрій.
+Шукай: точну назву моделі, технічні характеристики, рік випуску, орієнтовну ціну.
+У відповіді НЕ згадуй жодних інтернет-магазинів чи сайтів для покупки. Тільки технічна інформація.
 Відповідай ТІЛЬКИ JSON без markdown:
 {
   "confirmed_brand": "підтверджений бренд або null",
   "confirmed_model": "підтверджена точна модель або null",
   "confirmed_year": "рік або діапазон або null",
-  "confirmed_price_usd": "орієнтовна ціна USD (загальна ринкова, не з конкретного магазину) або null",
-  "additional_features": ["додаткова характеристика 1", "додаткова характеристика 2"],
+  "confirmed_price_usd": "орієнтовна ринкова ціна USD або null",
+  "additional_features": ["характеристика 1", "характеристика 2"],
   "confidence_boost": "висока / середня / низька",
-  "notes": "коротка нотатка що вдалось підтвердити або null"
+  "notes": "що вдалось підтвердити або null"
 }`
                 },
                 {
@@ -225,40 +255,20 @@ Comandante/Kinu/1Zpresso (ручні, циліндричні)
           });
 
           const step3Data = await step3.json();
-
           if (step3.ok && step3Data.choices?.[0]?.message?.content) {
             try {
               const webInfo = JSON.parse(step3Data.choices[0].message.content.replace(/```json|```/g, "").trim());
-
-              // Збагачуємо результат даними з веб-пошуку
-              if (webInfo.confirmed_brand && webInfo.confirmed_brand !== "null") {
-                identification.brand = webInfo.confirmed_brand;
-              }
-              if (webInfo.confirmed_model && webInfo.confirmed_model !== "null") {
-                identification.model = webInfo.confirmed_model;
-              }
-              if (webInfo.confirmed_year && webInfo.confirmed_year !== "null") {
-                identification.year_range = webInfo.confirmed_year;
-              }
-              if (webInfo.confirmed_price_usd && webInfo.confirmed_price_usd !== "null") {
-                identification.price_range = webInfo.confirmed_price_usd;
-              }
-              if (webInfo.confidence_boost) {
-                identification.confidence = webInfo.confidence_boost;
-              }
+              if (webInfo.confirmed_brand && webInfo.confirmed_brand !== "null") identification.brand = webInfo.confirmed_brand;
+              if (webInfo.confirmed_model && webInfo.confirmed_model !== "null") identification.model = webInfo.confirmed_model;
+              if (webInfo.confirmed_year && webInfo.confirmed_year !== "null") identification.year_range = webInfo.confirmed_year;
+              if (webInfo.confirmed_price_usd && webInfo.confirmed_price_usd !== "null") identification.price_range = webInfo.confirmed_price_usd;
+              if (webInfo.confidence_boost) identification.confidence = webInfo.confidence_boost;
               if (webInfo.additional_features?.length) {
-                identification.key_features = [
-                  ...(identification.key_features || []),
-                  ...webInfo.additional_features,
-                ].slice(0, 6);
+                identification.key_features = [...(identification.key_features || []), ...webInfo.additional_features].slice(0, 6);
               }
-            } catch {
-              // Якщо парсинг не вдався — продовжуємо з результатом етапу 2
-            }
+            } catch { /* продовжуємо з результатом етапу 2 */ }
           }
-        } catch {
-          // Якщо веб-пошук не вдався — продовжуємо з результатом етапу 2
-        }
+        } catch { /* якщо веб-пошук не вдався */ }
       }
 
       return {
@@ -268,41 +278,73 @@ Comandante/Kinu/1Zpresso (ручні, циліндричні)
       };
     }
 
-    // ── 2. Пошук на coffeeone.com.ua ────────────────────────────────────────
+    // ── 2. Пошук на coffeeone.com.ua ─────────────────────────────────────────
     if (action === "search") {
       const brand = (body.brand || "").toLowerCase().trim();
 
+      // Всі бренди з coffeeone.com.ua — прямі посилання на пошук
       const brandPages = {
-        "jura":             "https://coffeeone.com.ua/uk/all-products/auto-coffee/jura-automatic-coffee-machines",
-        "saeco":            "https://coffeeone.com.ua/uk/all-products/auto-coffee/saeco",
-        "philips":          "https://coffeeone.com.ua/uk/all-products/auto-coffee/philips",
-        "delonghi":         "https://coffeeone.com.ua/uk/all-products/auto-coffee/delonghi",
-        "de'longhi":        "https://coffeeone.com.ua/uk/all-products/auto-coffee/delonghi",
-        "de longhi":        "https://coffeeone.com.ua/uk/all-products/auto-coffee/delonghi",
-        "gaggia":           "https://coffeeone.com.ua/uk/all-products/professional-coffeemachines/gaggia",
-        "nuova simonelli":  "https://coffeeone.com.ua/uk/all-products/professional-coffeemachines/nuova-simonelli",
-        "victoria arduino": "https://coffeeone.com.ua/uk/all-products/professional-coffeemachines/nuova-simonelli",
-        "la marzocco":      "https://coffeeone.com.ua/uk/all-products/professional-coffeemachines/la-marzocco",
-        "astoria":          "https://coffeeone.com.ua/uk/all-products/professional-coffeemachines/astoria",
-        "bfc":              "https://coffeeone.com.ua/uk/all-products/professional-coffeemachines/bfc",
-        "rancilio":         "https://coffeeone.com.ua/uk/all-products/professional-coffeemachines/rancilio",
-        "rocket":           "https://coffeeone.com.ua/uk/all-products/professional-coffeemachines/rocket-espresso",
-        "rocket espresso":  "https://coffeeone.com.ua/uk/all-products/professional-coffeemachines/rocket-espresso",
-        "ecm":              "https://coffeeone.com.ua/uk/all-products/professional-coffeemachines/ecm",
-        "wega":             "https://coffeeone.com.ua/uk/all-products/professional-coffeemachines/wega",
-        "iberital":         "https://coffeeone.com.ua/uk/all-products/professional-coffeemachines/iberital",
-        "sanremo":          "https://coffeeone.com.ua/uk/all-products/professional-coffeemachines/sanremo",
-        "lelit":            "https://coffeeone.com.ua/uk/all-products/professional-coffeemachines/lelit",
-        "nespresso":        "https://coffeeone.com.ua/uk/all-products/prepared-coffee-machines/nespresso",
-        "krups":            "https://coffeeone.com.ua/uk/all-products/prepared-coffee-machines/krups",
-        "eureka":           "https://coffeeone.com.ua/uk/all-products/professional-coffee-grinders/eureka",
-        "mahlkonig":        "https://coffeeone.com.ua/uk/all-products/professional-coffee-grinders/mahlkonig",
-        "mahlkönig":        "https://coffeeone.com.ua/uk/all-products/professional-coffee-grinders/mahlkonig",
-        "mazzer":           "https://coffeeone.com.ua/uk/all-products/professional-coffee-grinders/mazzer",
-        "fiorenzato":       "https://coffeeone.com.ua/uk/all-products/professional-coffee-grinders/fiorenzato",
-        "anfim":            "https://coffeeone.com.ua/uk/all-products/professional-coffee-grinders/anfim",
-        "breville":         "https://coffeeone.com.ua/uk/all-products/auto-coffee/breville",
-        "sage":             "https://coffeeone.com.ua/uk/all-products/auto-coffee/breville",
+        // Професійні кавомашини
+        "la marzocco":        "https://coffeeone.com.ua/uk/all-products/professional-coffeemachines/la-marzocco",
+        "nuova simonelli":    "https://coffeeone.com.ua/uk/all-products/professional-coffeemachines/nuova-simonelli",
+        "victoria arduino":   "https://coffeeone.com.ua/uk/all-products/professional-coffeemachines/victoria-arduino-coffee-machines",
+        "astoria":            "https://coffeeone.com.ua/uk/all-products/professional-coffeemachines/astoria",
+        "bfc":                "https://coffeeone.com.ua/uk/all-products/professional-coffeemachines/bfc",
+        "rancilio":           "https://coffeeone.com.ua/uk/all-products/professional-coffeemachines/rancilio",
+        "rocket":             "https://coffeeone.com.ua/uk/all-products/professional-coffeemachines/rocket-espresso",
+        "rocket espresso":    "https://coffeeone.com.ua/uk/all-products/professional-coffeemachines/rocket-espresso",
+        "ecm":                "https://coffeeone.com.ua/uk/all-products/professional-coffeemachines/ecm",
+        "wega":               "https://coffeeone.com.ua/uk/all-products/professional-coffeemachines/wega",
+        "iberital":           "https://coffeeone.com.ua/uk/all-products/professional-coffeemachines/iberital",
+        "sanremo":            "https://coffeeone.com.ua/uk/all-products/professional-coffeemachines/sanremo",
+        "lelit":              "https://coffeeone.com.ua/uk/all-products/professional-coffeemachines/lelit",
+        "gaggia":             "https://coffeeone.com.ua/uk/all-products/professional-coffeemachines/gaggia",
+        "fiamma":             "https://coffeeone.com.ua/uk/index.php?route=product/search&search=fiamma",
+        "fiamma espresso":    "https://coffeeone.com.ua/uk/index.php?route=product/search&search=fiamma+espresso",
+        "brugnetti":          "https://coffeeone.com.ua/uk/index.php?route=product/search&search=brugnetti",
+        "bezzera":            "https://coffeeone.com.ua/uk/index.php?route=product/search&search=bezzera",
+        "aurora":             "https://coffeeone.com.ua/uk/index.php?route=product/search&search=aurora",
+        "kastor":             "https://coffeeone.com.ua/uk/index.php?route=product/search&search=kastor",
+        "synesso":            "https://coffeeone.com.ua/uk/index.php?route=product/search&search=synesso",
+        "slayer":             "https://coffeeone.com.ua/uk/index.php?route=product/search&search=slayer",
+
+        // Суперавтомати
+        "jura":               "https://coffeeone.com.ua/uk/all-products/auto-coffee/jura-automatic-coffee-machines",
+        "delonghi":           "https://coffeeone.com.ua/uk/all-products/auto-coffee/delonghi",
+        "de'longhi":          "https://coffeeone.com.ua/uk/all-products/auto-coffee/delonghi",
+        "de longhi":          "https://coffeeone.com.ua/uk/all-products/auto-coffee/delonghi",
+        "saeco":              "https://coffeeone.com.ua/uk/all-products/auto-coffee/saeco",
+        "philips":            "https://coffeeone.com.ua/uk/all-products/auto-coffee/philips",
+        "breville":           "https://coffeeone.com.ua/uk/all-products/auto-coffee/breville",
+        "sage":               "https://coffeeone.com.ua/uk/all-products/auto-coffee/breville",
+        "dr. coffee":         "https://coffeeone.com.ua/uk/index.php?route=product/search&search=dr+coffee",
+        "dr coffee":          "https://coffeeone.com.ua/uk/index.php?route=product/search&search=dr+coffee",
+        "rheavendors":        "https://coffeeone.com.ua/uk/index.php?route=product/search&search=rheavendors",
+
+        // Капсульні
+        "nespresso":          "https://coffeeone.com.ua/uk/all-products/prepared-coffee-machines/nespresso",
+        "krups":              "https://coffeeone.com.ua/uk/all-products/prepared-coffee-machines/krups",
+
+        // Кавомолки
+        "eureka":             "https://coffeeone.com.ua/uk/all-products/professional-coffee-grinders/eureka",
+        "mahlkonig":          "https://coffeeone.com.ua/uk/all-products/professional-coffee-grinders/mahlkonig",
+        "mahlkönig":          "https://coffeeone.com.ua/uk/all-products/professional-coffee-grinders/mahlkonig",
+        "mahlkoenig":         "https://coffeeone.com.ua/uk/all-products/professional-coffee-grinders/mahlkonig",
+        "mazzer":             "https://coffeeone.com.ua/uk/all-products/professional-coffee-grinders/mazzer",
+        "fiorenzato":         "https://coffeeone.com.ua/uk/all-products/professional-coffee-grinders/fiorenzato",
+        "anfim":              "https://coffeeone.com.ua/uk/all-products/professional-coffee-grinders/anfim",
+        "otto florence":      "https://coffeeone.com.ua/uk/index.php?route=product/search&search=otto+florence",
+        "macap":              "https://coffeeone.com.ua/uk/index.php?route=product/search&search=macap",
+
+        // Аксесуари та інше
+        "acaia":              "https://coffeeone.com.ua/uk/index.php?route=product/search&search=acaia",
+        "bravilor":           "https://coffeeone.com.ua/uk/index.php?route=product/search&search=bravilor",
+        "bravilor bonamat":   "https://coffeeone.com.ua/uk/index.php?route=product/search&search=bravilor+bonamat",
+        "taylor":             "https://coffeeone.com.ua/uk/index.php?route=product/search&search=taylor",
+        "liberty's":          "https://coffeeone.com.ua/uk/index.php?route=product/search&search=liberty",
+        "liberties":          "https://coffeeone.com.ua/uk/index.php?route=product/search&search=liberty",
+        "remidag":            "https://coffeeone.com.ua/uk/index.php?route=product/search&search=remidag",
+        "age":                "https://coffeeone.com.ua/uk/index.php?route=product/search&search=age",
       };
 
       let brandUrl = null;
